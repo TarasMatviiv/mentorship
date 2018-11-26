@@ -1,6 +1,7 @@
 package com.mentorship.filter;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class EncodingFilter implements Filter {
@@ -14,10 +15,9 @@ public class EncodingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
-        req.setCharacterEncoding(ENCODING);
-        resp.setCharacterEncoding(ENCODING);
-        filterChain.doFilter(req, resp);
-        resp.setContentType("text/html; charset=UTF-8");
+
+        EncodeRequest encodeRequest = new EncodeRequest((HttpServletRequest) req);
+        filterChain.doFilter(encodeRequest, resp);
     }
 
     @Override

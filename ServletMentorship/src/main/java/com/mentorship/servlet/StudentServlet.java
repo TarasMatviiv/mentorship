@@ -1,5 +1,6 @@
 package com.mentorship.servlet;
 
+import com.mentorship.exception.MandatoryValuesMissingException;
 import com.mentorship.model.Student;
 import com.mentorship.service.StudentService;
 import com.mentorship.service.impl.StudentServiceImpl;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
 
 public class StudentServlet extends HttpServlet {
 
@@ -37,15 +41,17 @@ public class StudentServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String name = req.getParameter(Student.NAME);
         String age = req.getParameter(Student.AGE);
         String subjectIdsAsString = req.getParameter("subjectIds");
-        System.out.println(name);
-        System.out.println(age);
-        System.out.println(subjectIdsAsString);
 
-        doGet(req, resp);
+        try {
+            studentService.createStudent(name, age, subjectIdsAsString);
+            doGet(req, resp);
+        } catch (Exception e) {
+            req.setAttribute("message", e.getMessage());
+            req.getRequestDispatcher(Pages.ERROR).forward(req, resp);
+        }
     }
 }
 
