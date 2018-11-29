@@ -1,11 +1,11 @@
 package com.mentorship.dao.impl;
 
 import com.mentorship.dao.StudentDao;
-import com.mentorship.dao.SubjectDao;
 import com.mentorship.model.Student;
 import com.mentorship.model.Subject;
 import com.mentorship.persistent.ConnectionManager;
 import com.mentorship.persistent.DaoManager;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StudentDaoImpl implements StudentDao {
+
+    private static final Logger LOG = Logger.getLogger(StudentDaoImpl.class);
 
     private static final String FIND_ALL = "SELECT * FROM " + Student.TABLE_NAME;
     private static final String FIND_BY_ID = "SELECT * FROM student WHERE " + Student.ID + " = ?";
@@ -39,7 +41,7 @@ public class StudentDaoImpl implements StudentDao {
                 students.add(student);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Can not get all students", e);
         }
 
         return students;
@@ -59,7 +61,7 @@ public class StudentDaoImpl implements StudentDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Can not get raw students by subject id", e);
         }
         return rawStudents;
     }
@@ -81,7 +83,7 @@ public class StudentDaoImpl implements StudentDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Can not find student by id", e);
         }
         return student;
     }
@@ -104,7 +106,7 @@ public class StudentDaoImpl implements StudentDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Can not find student by name", e);
         }
         return student;
     }
@@ -118,7 +120,7 @@ public class StudentDaoImpl implements StudentDao {
             ps.executeUpdate();
             createSubjectsRelations(student);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Can not create student", e);
         }
     }
 
@@ -132,7 +134,7 @@ public class StudentDaoImpl implements StudentDao {
                 ps.setInt(2, subjectId);
                 ps.executeUpdate();
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOG.error("Can not create subjects relations", e);
             }
         }
     }

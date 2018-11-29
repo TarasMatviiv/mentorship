@@ -21,8 +21,7 @@ public class EncodeRequest extends HttpServletRequestWrapper {
         try {
             url = URLEncoder.encode(url, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            LOG.error("Problem with decoding");
+            LOG.error("Problem with decoding", e);
         }
         return url;
     }

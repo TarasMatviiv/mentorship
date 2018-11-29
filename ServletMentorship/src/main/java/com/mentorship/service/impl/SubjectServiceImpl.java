@@ -24,4 +24,9 @@ public class SubjectServiceImpl implements SubjectService {
 
         return subject;
     }
+
+    @Override
+    public List<Integer> findAllSubjectIds() {
+        return DaoManager.getSubjectDao().findAllIds();
+    }
 }

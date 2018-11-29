@@ -22,8 +22,7 @@ public class ConnectionManager {
     }
 
     private static void initialization() {
-        try {
-            connection = DriverManager.getConnection(url, user, pass);
+        try { connection = DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
             e.printStackTrace();
         }
