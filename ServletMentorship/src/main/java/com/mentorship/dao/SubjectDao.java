@@ -8,6 +8,9 @@ public interface SubjectDao {
 
     List<Subject> findAll();
     Subject findByTitle(String title);
-    List<Subject> findAllRawByStudentId(int studentId);
+
+    Subject findById(int id);
+
+    List<Subject> findAllByStudentId(int studentId);
     List<Integer> findAllIds();
 }

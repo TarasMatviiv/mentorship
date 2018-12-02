@@ -1,5 +1,7 @@
 package com.mentorship.model;
 
+import com.mentorship.persistent.DaoManager;
+
 import java.util.List;
 
 public class Student {
@@ -39,6 +41,9 @@ public class Student {
     }
 
     public List<Subject> getSubjects() {
+        if(subjects == null) {
+            subjects = DaoManager.getSubjectDao().findAllByStudentId(id);
+        }
         return subjects;
     }
 

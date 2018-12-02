@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 public class SubjectServlet extends HttpServlet {
 
@@ -23,7 +24,9 @@ public class SubjectServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("subjects", subjectService.findAllSubjects());
+        List<Subject> subjects = subjectService.findAllSubjects();
+        subjects.forEach(subject -> System.out.println(subject.getStudents() + "***"));
+        req.setAttribute("subjects", subjects);
 
         String title = req.getParameter(Subject.TITLE);
         if (StringUtils.isNotBlank(title)) {
@@ -37,8 +40,6 @@ public class SubjectServlet extends HttpServlet {
                 return;
             }
         }
-
         req.getRequestDispatcher(Pages.SUBJECTS).forward(req, resp);
     }
-
 }

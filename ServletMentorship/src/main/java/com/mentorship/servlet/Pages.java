@@ -1,7 +1,9 @@
 package com.mentorship.servlet;
 
 public interface Pages {
-    String STUDENTS = "students.jsp";
-    String SUBJECTS = "subjects.jsp";
-    String ERROR = "error.jsp";
+    String STUDENTS = "pages/students.jsp";
+    String SUBJECTS = "pages/subjects.jsp";
+    String ERROR = "pages/error.jsp";
+    String MAIN = "pages/main.jsp";
+    String INDEX = "index.jsp";
 }

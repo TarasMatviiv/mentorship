@@ -1,10 +1,13 @@
 package com.mentorship.model;
 
+import com.mentorship.persistent.DaoManager;
+
 import java.util.List;
 
 public class Subject {
 
     public static final String TABLE_NAME = "subject";
+    public static final String ALL = "subject.*";
     public static final String ID = "subject_id";
     public static final String COEFFICIENT = "coefficient";
     public static final String TITLE = "title";
@@ -39,6 +42,9 @@ public class Subject {
     }
 
     public List<Student> getStudents() {
+        if(students == null) {
+            students = DaoManager.getStudentDao().findAllBySubjectId(id);
+        }
         return students;
     }
 

@@ -4,7 +4,6 @@ import com.mentorship.dao.StudentDao;
 import com.mentorship.model.Student;
 import com.mentorship.model.Subject;
 import com.mentorship.persistent.ConnectionManager;
-import com.mentorship.persistent.DaoManager;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
@@ -19,58 +18,59 @@ public class StudentDaoImpl implements StudentDao {
     private static final String FIND_ALL = "SELECT * FROM " + Student.TABLE_NAME;
     private static final String FIND_BY_ID = "SELECT * FROM student WHERE " + Student.ID + " = ?";
     private static final String FIND_BY_NAME = "SELECT * FROM student WHERE " + Student.NAME + " = ?";
-    private static final String FIND_ALL_STUDENTS_IDS_BY_SUBJECT_ID = "SELECT " + Student.ID + " FROM student_subject WHERE " + Subject.ID + " = ?";
+    private static final String FIND_ALL_BY_SUBJECT_ID = "SELECT student.* FROM " + Student.TABLE_NAME
+            + " JOIN student_subject ON student.student_id = student_subject.student_id "
+            + " WHERE student_subject.subject_id  = ?";
     private static final String CREATE = "INSERT INTO " + Student.TABLE_NAME + " (" + Student.NAME + ", " + Student.AGE + ")  VALUES (?, ?);";
     private static final String CREATE_RELATIONS = "INSERT INTO student_subject (" + Student.ID + ", " + Subject.ID + ")  VALUES (?, ?);";
 
     @Override
     public List<Student> findAll() {
         Connection connection = ConnectionManager.getConnection();
-
         List<Student> students = new ArrayList<>();
+
         try (Statement s = connection.createStatement();
              ResultSet rs = s.executeQuery(FIND_ALL)) {
-
             while (rs.next()) {
                 Student student = new Student();
-                int studentId = rs.getInt(Student.ID);
-                student.setId(studentId);
+                student.setId(rs.getInt(Student.ID));
                 student.setAge(rs.getInt(Student.AGE));
                 student.setName(rs.getString(Student.NAME));
-                student.setSubjects(DaoManager.getSubjectDao().findAllRawByStudentId(studentId));
                 students.add(student);
             }
         } catch (SQLException e) {
             LOG.error("Can not get all students", e);
         }
-
         return students;
     }
 
     @Override
-    public List<Student> findAllRawBySubjectId(final int subjectId) {
+    public List<Student> findAllBySubjectId(final int subjectId) {
         Connection connection = ConnectionManager.getConnection();
-        List<Student> rawStudents = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_STUDENTS_IDS_BY_SUBJECT_ID)) {
+        List<Student> students = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL_BY_SUBJECT_ID)) {
             ps.setInt(1, subjectId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Student student = new Student();
                     student.setId(rs.getInt(Student.ID));
-                    rawStudents.add(student);
+                    student.setAge(rs.getInt(Student.AGE));
+                    student.setName(rs.getString(Student.NAME));
+                    students.add(student);
                 }
             }
         } catch (SQLException e) {
-            LOG.error("Can not get raw students by subject id", e);
+            LOG.error("Can not get students by subject id", e);
         }
-        return rawStudents;
+        return students;
     }
 
     @Override
     public Student findById(final int studentId) {
         Connection connection = ConnectionManager.getConnection();
-
         Student student = null;
+
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, studentId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -79,7 +79,6 @@ public class StudentDaoImpl implements StudentDao {
                     student.setId(studentId);
                     student.setName(rs.getString(Student.NAME));
                     student.setAge(rs.getInt(Student.AGE));
-                    student.setSubjects(DaoManager.getSubjectDao().findAllRawByStudentId(studentId));
                 }
             }
         } catch (SQLException e) {
@@ -91,18 +90,16 @@ public class StudentDaoImpl implements StudentDao {
     @Override
     public Student findByName(final String studentName) {
         Connection connection = ConnectionManager.getConnection();
-
         Student student = null;
+
         try (PreparedStatement ps = connection.prepareStatement(FIND_BY_NAME)) {
             ps.setString(1, studentName);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     student = new Student();
-                    int studentId = rs.getInt(Student.ID);
-                    student.setId(studentId);
+                    student.setId(rs.getInt(Student.ID));
                     student.setName(studentName);
                     student.setAge(rs.getInt(Student.AGE));
-                    student.setSubjects(DaoManager.getSubjectDao().findAllRawByStudentId(studentId));
                 }
             }
         } catch (SQLException e) {
