@@ -1,21 +1,25 @@
 package com.mentorship.servlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 public class LogoutServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if(session != null){
-            session.invalidate();
+        Cookie loginCookie = null;
+        for(Cookie c: req.getCookies()) {
+            if(c.getName().equals("admin")) {
+                loginCookie = c;
+            }
         }
-        req.getRequestDispatcher(Pages.INDEX).forward(req, resp);
-//        resp.sendRedirect(req.getContextPath());
+
+        if(loginCookie != null) {
+            loginCookie.setMaxAge(0);
+            resp.addCookie(loginCookie);
+        }
+//        req.getRequestDispatcher(Pages.INDEX).forward(req, resp);
+        resp.sendRedirect(Pages.INDEX_URI);
     }
 }

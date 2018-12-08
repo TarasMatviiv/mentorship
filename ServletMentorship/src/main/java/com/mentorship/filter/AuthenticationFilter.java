@@ -3,9 +3,9 @@ package com.mentorship.filter;
 import com.mentorship.servlet.Pages;
 
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class AuthenticationFilter implements Filter {
@@ -20,12 +20,16 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
-        HttpSession session = request.getSession(false);
-
-        if (session == null) {
-            req.setAttribute("errorMessage", "Wrong login or password");
-            response.sendRedirect("");
-//            request.getRequestDispatcher(Pages.INDEX).forward(req, resp);
+        Cookie loginCookie = null;
+        for (Cookie c : request.getCookies()) {
+            if (c.getName().equals("admin")) {
+                loginCookie = c;
+            }
+        }
+        if (loginCookie == null) {
+            req.setAttribute("errorMessage", "U are not logged!");
+//            response.sendRedirect(Pages.INDEX_URI);
+            request.getRequestDispatcher(Pages.INDEX).forward(req, resp);
         } else {
             filterChain.doFilter(request, response);
         }

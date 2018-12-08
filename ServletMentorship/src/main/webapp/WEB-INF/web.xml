@@ -32,7 +32,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>StudentServletName</servlet-name>
-        <url-pattern>/students</url-pattern>
+        <url-pattern>/home/students</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -41,7 +41,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>SubjectServletName</servlet-name>
-        <url-pattern>/subjects</url-pattern>
+        <url-pattern>/home/subjects</url-pattern>
     </servlet-mapping>
 
     <filter>
@@ -88,7 +88,7 @@
     </filter>
     <filter-mapping>
         <filter-name>AuthenticationFilterName</filter-name>
-        <url-pattern>/subjects</url-pattern>
+        <url-pattern>/home/*</url-pattern>
     </filter-mapping>
 </web-app>
         
