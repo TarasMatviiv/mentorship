@@ -1,20 +1,29 @@
 package com.mentorship.service.impl;
 
+import com.mentorship.dao.StudentDao;
+import com.mentorship.dao.impl.StudentDaoImpl;
 import com.mentorship.exception.MandatoryValuesMissingException;
 import com.mentorship.model.Student;
 import com.mentorship.model.Subject;
-import com.mentorship.persistent.DaoManager;
 import com.mentorship.service.StudentService;
 import com.mentorship.util.ValidationUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StudentServiceImpl implements StudentService {
 
+    StudentDao studentDao = new StudentDaoImpl();
+
     @Override
     public List<Student> findAllStudents() {
-        return DaoManager.getStudentDao().findAll();
+        return studentDao.findAll();
+    }
+
+    @Override
+    public Student findStudent(int id) {
+        return studentDao.find(id);
     }
 
     @Override
@@ -26,21 +35,13 @@ public class StudentServiceImpl implements StudentService {
         student.setName(name);
         student.setAge(Integer.parseInt(age));
 
-        List<Subject> rawSubjects = createRawSubjectsFromIds(subjectIds);
-        student.setSubjects(rawSubjects);
+        Subject subject = new Subject();
+        subject.setTitle("MATH");
+        subject.setCoefficient(3);
 
-        DaoManager.getStudentDao().create(student);
+        student.setSubjects(Collections.singletonList(subject));
+
+        studentDao.create(student);
     }
 
-    private List<Subject> createRawSubjectsFromIds(String[] subjectIds) {
-        List<Subject> subjects = new ArrayList<>();
-        if (subjectIds != null) {
-            for (String idAsString : subjectIds) {
-                Subject subject = new Subject();
-                subject.setId(Integer.parseInt(idAsString));
-                subjects.add(subject);
-            }
-        }
-        return subjects;
-    }
 }

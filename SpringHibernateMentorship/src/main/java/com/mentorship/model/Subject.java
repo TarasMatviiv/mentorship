@@ -1,10 +1,15 @@
 package com.mentorship.model;
 
-import com.mentorship.persistent.DaoManager;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class Subject {
+@Entity
+@Table(name = Subject.TABLE_NAME)
+public class Subject implements Serializable {
 
     public static final String TABLE_NAME = "subject";
     public static final String ALL = "subject.*";
@@ -12,9 +17,19 @@ public class Subject {
     public static final String COEFFICIENT = "coefficient";
     public static final String TITLE = "title";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = ID)
     private int id;
+
+    @Column(name = TITLE)
     private String title;
+
+    @Column(name = COEFFICIENT)
     private int coefficient;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
     private List<Student> students;
 
     public int getId() {
@@ -42,9 +57,6 @@ public class Subject {
     }
 
     public List<Student> getStudents() {
-        if(students == null) {
-            students = DaoManager.getStudentDao().findAllBySubjectId(id);
-        }
         return students;
     }
 

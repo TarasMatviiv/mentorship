@@ -1,19 +1,38 @@
 package com.mentorship.model;
 
-import com.mentorship.persistent.DaoManager;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class Student {
+@Entity
+@Table(name = Student.TABLE_NAME)
+public class Student implements Serializable {
 
     public static final String TABLE_NAME = "student";
     public static final String ID = "student_id";
     public static final String NAME = "name";
     public static final String AGE = "age";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = ID)
     private int id;
+
+    @Column(name = NAME)
     private String name;
+
+    @Column(name = AGE)
     private int age;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "student_subject", schema = "men",
+            joinColumns = {@JoinColumn(name = ID, referencedColumnName = ID)},
+            inverseJoinColumns = {@JoinColumn(name = Subject.ID, referencedColumnName = Subject.ID)}
+    )
     private List<Subject> subjects;
 
     public int getId() {
@@ -41,9 +60,6 @@ public class Student {
     }
 
     public List<Subject> getSubjects() {
-        if(subjects == null) {
-            subjects = DaoManager.getSubjectDao().findAllByStudentId(id);
-        }
         return subjects;
     }
 

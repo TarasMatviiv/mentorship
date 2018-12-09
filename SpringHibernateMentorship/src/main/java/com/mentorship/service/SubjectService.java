@@ -9,5 +9,4 @@ public interface SubjectService {
 
     List<Subject> findAllSubjects();
     Subject findSubjectByTitle(String title) throws SubjectNotFoundException;
-    List<Integer> findAllSubjectIds();
 }

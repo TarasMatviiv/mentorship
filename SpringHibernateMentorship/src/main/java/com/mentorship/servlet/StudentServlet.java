@@ -29,12 +29,12 @@ public class StudentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Student> students = studentService.findAllStudents();
-        List<Subject> subjects = subjectService.findAllSubjects();
-        students.forEach(student -> System.out.println(student.getSubjects() + "***"));
+//        List<Student> students = studentService.findAllStudents();
+        Student s = studentService.findStudent(7);
+//        List<Subject> subjects = subjectService.findAllSubjects();
 
-        req.setAttribute("students", students);
-        req.setAttribute("subjects", subjects);
+        req.setAttribute("students", s);
+//        req.setAttribute("subjects", subjects);
         req.getRequestDispatcher(Pages.STUDENTS).forward(req, resp);
     }
 
