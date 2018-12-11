@@ -7,32 +7,21 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = Student.TABLE_NAME)
+@Table(name = "student")
 public class Student implements Serializable {
-
-    public static final String TABLE_NAME = "student";
-    public static final String ID = "student_id";
-    public static final String NAME = "name";
-    public static final String AGE = "age";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = ID)
     private int id;
 
-    @Column(name = NAME)
     private String name;
 
-    @Column(name = AGE)
     private int age;
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "student_subject", schema = "men",
-            joinColumns = {@JoinColumn(name = ID, referencedColumnName = ID)},
-            inverseJoinColumns = {@JoinColumn(name = Subject.ID, referencedColumnName = Subject.ID)}
-    )
+    @ManyToMany()
+    @JoinTable(name = "student_subject",
+            joinColumns = {@JoinColumn(name = "student_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "subject_id", referencedColumnName = "id")})
     private List<Subject> subjects;
 
     public int getId() {
@@ -65,15 +54,5 @@ public class Student implements Serializable {
 
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", subjects=" + subjects +
-                '}' + "\n";
     }
 }

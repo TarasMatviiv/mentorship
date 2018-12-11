@@ -29,19 +29,19 @@ public class StudentServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        List<Student> students = studentService.findAllStudents();
-        Student s = studentService.findStudent(7);
-//        List<Subject> subjects = subjectService.findAllSubjects();
+        List<Student> s = studentService.findAllStudents();
+//        Student s = studentService.findStudent(7);
+        List<Subject> subjects = subjectService.findAllSubjects();
 
         req.setAttribute("students", s);
-//        req.setAttribute("subjects", subjects);
+        req.setAttribute("subjects", subjects);
         req.getRequestDispatcher(Pages.STUDENTS).forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter(Student.NAME);
-        String age = req.getParameter(Student.AGE);
+        String name = req.getParameter("name");
+        String age = req.getParameter("age");
         String subjectIds[] = req.getParameterValues("subjectIdsCheckbox");
 
         try {

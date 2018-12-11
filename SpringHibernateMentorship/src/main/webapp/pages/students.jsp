@@ -2,19 +2,6 @@
 
 <html>
     <body>
-        <%
-        String message = null;
-        String sessionID = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null){
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals("testCookie")) message = cookie.getValue();
-            if(cookie.getName().equals("JSESSIONID")) sessionID = cookie.getValue();
-        }
-        }
-        %>
-        <h4><%=message%></h4>
-
         <h1>Students</h1>
         ${students}
 

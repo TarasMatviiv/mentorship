@@ -28,7 +28,7 @@ public class SubjectServlet extends HttpServlet {
         subjects.forEach(subject -> System.out.println(subject.getStudents() + "***"));
         req.setAttribute("subjects", subjects);
 
-        String title = req.getParameter(Subject.TITLE);
+        String title = req.getParameter("title");
         if (StringUtils.isNotBlank(title)) {
             try {
                 Subject subject = subjectService.findSubjectByTitle(title);
