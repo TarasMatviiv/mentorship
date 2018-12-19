@@ -12,6 +12,8 @@ import com.mentorship.util.ValidationUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 
@@ -47,10 +49,15 @@ public class StudentServiceImpl implements StudentService {
         Student student = new Student();
         student.setName(name);
         student.setAge(Integer.parseInt(age));
-
-        Subject subject = subjectDao.find(Integer.parseInt(subjectIds[0]));
-        student.setSubjects(Collections.singletonList(subject));
+        student.setSubjects(createSubjectsFromIds(subjectIds));
 
         studentDao.create(student);
+    }
+
+    private List<Subject> createSubjectsFromIds(final String[] subjectIds) {
+        return Stream.of(subjectIds)
+                .map(Integer::parseInt)
+                .map(Subject::new)
+                .collect(Collectors.toList());
     }
 }

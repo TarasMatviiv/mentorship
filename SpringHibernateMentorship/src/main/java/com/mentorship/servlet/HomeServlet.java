@@ -1,17 +1,17 @@
 package com.mentorship.servlet;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/home")
-public class HomeServlet extends HttpServlet {
+@Controller("/home")
+public class HomeServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(Pages.HOME).forward(req, resp);
+    @RequestMapping
+    public String getHomePage() throws ServletException, IOException {
+//        req.getRequestDispatcher(Pages.HOME).forward(req, resp);
+        return "home";
     }
 }

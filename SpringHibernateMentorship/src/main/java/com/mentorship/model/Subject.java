@@ -1,8 +1,6 @@
 package com.mentorship.model;
 
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -21,6 +19,13 @@ public class Subject implements Serializable {
 
     @ManyToMany(mappedBy = "subjects")
     private List<Student> students;
+
+    public Subject() {
+    }
+
+    public Subject(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
