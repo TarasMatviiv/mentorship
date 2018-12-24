@@ -7,6 +7,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class AuthenticationFilter implements Filter {
 
@@ -20,18 +22,15 @@ public class AuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
-        Cookie loginCookie = null;
-        for (Cookie c : request.getCookies()) {
-            if (c.getName().equals("admin")) {
-                loginCookie = c;
-            }
-        }
-        if (loginCookie == null) {
-            req.setAttribute("errorMessage", "U are not logged!");
-//            response.sendRedirect(Pages.INDEX_URI);
-            request.getRequestDispatcher(Pages.INDEX).forward(req, resp);
-        } else {
+        Optional<Cookie> loginCookie = Stream.of(request.getCookies())
+                .filter(c -> c.getName().equals("admin"))
+                .findAny();
+
+        if (loginCookie.isPresent()) {
             filterChain.doFilter(request, response);
+        } else {
+            req.setAttribute("errorMessage", "U are not logged!");
+            request.getRequestDispatcher(Pages.INDEX_FULL).forward(req, resp);
         }
     }
 

@@ -41,8 +41,6 @@
     <filter-mapping>
         <filter-name>EncodingFilterName</filter-name>
         <url-pattern>/*</url-pattern>
-        <!--<servlet-name>LoginServlet</servlet-name>-->
-        <!--<dispatcher>REQUEST</dispatcher>-->
     </filter-mapping>
 
     <filter>

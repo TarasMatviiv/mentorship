@@ -5,12 +5,16 @@ import com.mentorship.dao.impl.SubjectDaoImpl;
 import com.mentorship.exception.SubjectNotFoundException;
 import com.mentorship.model.Subject;
 import com.mentorship.service.SubjectService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SubjectServiceImpl implements SubjectService {
 
-    SubjectDao subjectDao = new SubjectDaoImpl();
+    @Autowired
+    private SubjectDao subjectDao;
 
     @Override
     public List<Subject> findAllSubjects() {
@@ -19,12 +23,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public Subject findSubjectByTitle(final String title) throws SubjectNotFoundException {
-        Subject subject = subjectDao.find(1);
-
-        if (subject == null) {
-            throw new SubjectNotFoundException();
-        }
-
-        return subject;
+        return subjectDao.findByTitle(title)
+                .orElseThrow(SubjectNotFoundException::new);
     }
 }

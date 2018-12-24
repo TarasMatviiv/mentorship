@@ -1,38 +1,26 @@
 package com.mentorship.service.impl;
 
 import com.mentorship.dao.StudentDao;
-import com.mentorship.dao.SubjectDao;
 import com.mentorship.dao.impl.StudentDaoImpl;
-import com.mentorship.dao.impl.SubjectDaoImpl;
 import com.mentorship.exception.MandatoryValuesMissingException;
 import com.mentorship.model.Student;
 import com.mentorship.model.Subject;
 import com.mentorship.service.StudentService;
 import com.mentorship.util.ValidationUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static java.util.Arrays.asList;
-
+@Service
 public class StudentServiceImpl implements StudentService {
 
-    StudentDao studentDao = new StudentDaoImpl();
-    SubjectDao subjectDao = new SubjectDaoImpl();
+    @Autowired
+    private StudentDao studentDao;
 
     @Override
     public List<Student> findAllStudents() {
-        Student student1 = new Student();
-        student1.setName("123");
-        student1.setAge(12);
-        Subject subject = new Subject();
-        subject.setTitle("leee");
-        subject.setCoefficient(2);
-        student1.setSubjects(asList(subject));
-        subjectDao.create(subject);
-        studentDao.create(student1);
         return studentDao.findAll();
     }
 
@@ -42,7 +30,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void createStudent(final String name, final String age, final String[] subjectIds) throws MandatoryValuesMissingException {
+    public void createStudent(final String name, final String age, final List<Integer> subjectIds) throws MandatoryValuesMissingException {
         ValidationUtils.validateNotEmpty(name, "Name should not be null");
         ValidationUtils.validateNotEmpty(age, "Age should not be null");
 
@@ -54,9 +42,8 @@ public class StudentServiceImpl implements StudentService {
         studentDao.create(student);
     }
 
-    private List<Subject> createSubjectsFromIds(final String[] subjectIds) {
-        return Stream.of(subjectIds)
-                .map(Integer::parseInt)
+    private List<Subject> createSubjectsFromIds(final List<Integer> subjectIds) {
+        return subjectIds.stream()
                 .map(Subject::new)
                 .collect(Collectors.toList());
     }

@@ -15,8 +15,8 @@
         </h1>
 
         <h2>
-            <a href="home/students">Students</a>
-            <a href="home/subjects">Subjects</a>
+            <a href="/home/students">Students</a>
+            <a href="/home/subjects">Subjects</a>
         </h2>
 
         <form action="logout" method="post">

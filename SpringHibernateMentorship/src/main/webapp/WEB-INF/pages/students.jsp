@@ -16,7 +16,7 @@
                 </tr>
                 <c:forEach var="subject" items="${subjects}">
                     <tr>
-                        <td colspan="2"><input type="checkbox" name="subjectIdsCheckbox" value="${subject.id}">${subject.title}</input></td>
+                        <td colspan="2"><input type="checkbox" name="subjectIds" value="${subject.id}">${subject.title}</input></td>
                     </tr>
                 </c:forEach>
                 <tr>
