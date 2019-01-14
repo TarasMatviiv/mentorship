@@ -11,11 +11,19 @@
         </c:if>
 
         <form action="/login" method="post">
-            Username: <input type="text" name="username">
-            <br>
-            Password: <input type="password" name="password">
-            <br><br>
-            <input type="submit" value="Login">
+            <table>
+                <tr>
+                   <td>User:</td>
+                   <td><input type='text' name='username' value=''></td>
+                </tr>
+                <tr>
+                   <td>Password:</td>
+                   <td><input type='password' name='password' /></td>
+                </tr>
+                <tr>
+                   <td><input name="submit" type="submit" value="submit" /></td>
+                </tr>
+            </table>
         </form>
     </body>
 </html>

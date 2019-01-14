@@ -18,7 +18,7 @@ public class AuthenticationController {
     private static final String ADMIN_PASSWORD = "nimda";
     private static final int ONE_HOUR = 60 * 60;
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/logfin")
     public String login(@RequestParam("username") final String username,
                         @RequestParam("password") final String password,
                         final Model model,
@@ -32,7 +32,7 @@ public class AuthenticationController {
             page = Pages.HOME;
         } else {
             model.addAttribute("errorMessage", "Wrong login or password");
-            page = Pages.INDEX_FULL;
+            page = Pages.INDEX;
         }
         return page;
     }
