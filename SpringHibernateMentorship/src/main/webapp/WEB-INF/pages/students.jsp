@@ -4,7 +4,10 @@
     <body>
         <h1>Students</h1>
         ${students}
-
+        <c:if test = "${not empty a}">
+             <p><c:out value = "${mok}"/><p>
+        </c:if>
+${mok}
         <h1>Add new student</h1>
         <form action="students" method="post">
             <table>

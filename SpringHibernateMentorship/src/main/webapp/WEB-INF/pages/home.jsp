@@ -3,13 +3,6 @@
 <html>
     <body>
 
-        <c:if test = "${not empty messageForAdmin}">
-             <p><c:out value = "${messageForAdmin}"/><p>
-        </c:if>
-        <c:if test = "${not empty a}">
-             <p><c:out value = "${a}"/><p>
-        </c:if>
-
         <h1>
             Main Page
         </h1>
@@ -19,7 +12,7 @@
             <a href="/home/subjects">Subjects</a>
         </h2>
 
-        <form action="logout" method="post">
+        <form action="/logout" method="post">
             <input type="submit" value="Logout" >
         </form>
     </body>
